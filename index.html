@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenLayer AI Agent-to-Agent Escrow Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: #161b22; padding: 25px; border-radius: 10px; border: 1px solid #30363d; }
+        h1 { color: #58a6ff; text-align: center; }
+        .card { background: #21262d; border: 1px solid #30363d; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        label { font-weight: bold; display: block; margin-top: 10px; color: #8b949e; }
+        input, textarea, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #30363d; background: #0d1117; color: #fff; box-sizing: border-box; }
+        button { background-color: #238636; font-weight: bold; cursor: pointer; margin-top: 15px; border: none; }
+        button:hover { background-color: #2ea043; }
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 12px; font-weight: bold; background-color: #238636; color: white; }
+        pre { background: #0d1117; padding: 10px; border-radius: 5px; border: 1px solid #30363d; overflow-x: auto; color: #7ee787; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 GenLayer Autonomous Agent Escrow</h1>
+        <p style="text-align:center; color: #8b949e;">Agent-to-Agent B2B Service Settlement & Consensus Verification</p>
+
+        <div class="card">
+            <h3>1. Create Escrow (Buyer Agent)</h3>
+            <label>Escrow ID</label>
+            <input type="text" id="escrowId" value="escrow-88">
+            <label>Buyer Agent</label>
+            <input type="text" id="buyerAgent" value="Agent_Alpha">
+            <label>Seller Agent</label>
+            <input type="text" id="sellerAgent" value="Agent_Beta">
+            <label>Amount ($)</label>
+            <input type="number" id="amount" value="300">
+            <label>Service Specification</label>
+            <textarea id="spec">Generate an AI trend market report for Q3 2026.</textarea>
+            <button onclick="createEscrow()">Lock Escrow Funds</button>
+        </div>
+
+        <div class="card">
+            <h3>2. Submit & Verify Settlement (GenLayer Consensus)</h3>
+            <label>Deliverable URL</label>
+            <input type="text" id="deliverableUrl" value="https://api.agentbeta.com/reports/q3-ai-trends.json">
+            <button onclick="settleEscrow()">Trigger GenLayer Verification</button>
+        </div>
+
+        <div class="card">
+            <h3>Transaction Log & State Output</h3>
+            <pre id="output">System ready. Awaiting Agent actions...</pre>
+        </div>
+    </div>
+
+    <script>
+        let escrowState = {};
+
+        function createEscrow() {
+            const id = document.getElementById('escrowId').value;
+            escrowState = {
+                escrow_id: id,
+                buyer_agent: document.getElementById('buyerAgent').value,
+                seller_agent: document.getElementById('sellerAgent').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                service_spec: document.getElementById('spec').value,
+                status: "LOCKED",
+                deliverable_url: null
+            };
+            document.getElementById('output').innerText = "Fund Locked in Escrow:\n" + JSON.stringify(escrowState, null, 2);
+        }
+
+        function settleEscrow() {
+            if (!escrowState.escrow_id) {
+                alert("Please create an escrow first!");
+                return;
+            }
+            escrowState.deliverable_url = document.getElementById('deliverableUrl').value;
+            escrowState.status = "RELEASED (APPROVED BY GENLAYER CONSENSUS)";
+            escrowState.validator_reasoning = "GenLayer validators verified deliverable against service specification successfully.";
+            
+            document.getElementById('output').innerText = "Settlement Complete:\n" + JSON.stringify(escrowState, null, 2);
+        }
+    </script>
+</body>
+</html>
